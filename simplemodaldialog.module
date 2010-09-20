@@ -1,0 +1,62 @@
+<?php
+
+/**
+ * @file module file
+ *
+ * Simplemodaldialog provides a variable $simplemodaldialog to the page.tpl.php
+ * The variable is contains html data to be displayed as a modal or it contains false.
+ *
+ * The variable value is session based, ie, the modal dialog is not visible if the user has marked it to be invisible
+ */
+
+function simplemodaldialog_menu() {
+  $items = array();
+  $items['simplemodaldialog/hide'] = array(
+    'title' => 'Hide Modal Dialog',
+    'page callback' => 'simplemodaldialog_hide',
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+  );
+  return $items;
+}
+
+function simplemodaldialog_hide() {
+  $_SESSION['simplemodaldialog'] = true;
+  // For testing purposes, uncomment this to toggle session value
+  // $_SESSION['simplemodaldialog'] = !$_SESSION['simplemodaldialog'];
+  print '';
+}
+
+/**
+ * Set $simplemodaldialog variable
+ *
+ * The variable is set only if it is a front page and session does not have simpledialog already set.
+ * 
+ * @param array $vars
+ */
+function simplemodaldialog_preprocess_page(&$vars) {
+  // Only process if it is a front page
+  // Check if session is initially blank
+  if ($vars['is_front'] && !$_SESSION['simplemodaldialog']) {
+    $vars['simplemodaldialog'] = theme('simplemodaldialog');
+    
+  } else {
+    // Session is not blank, and set already. so set the variable to false
+    $vars['simplemodaldialog'] = false;
+  }
+}
+
+/**
+ * Implementation of hook_theme()
+ *
+ * Delegate contents for the modal dialog to a template file
+ * 
+ * @return <type>
+ */
+function simplemodaldialog_theme() {
+  return array(
+    'simplemodaldialog' => array(
+      'template' => 'simplemodaldialog',
+    )
+  );
+}

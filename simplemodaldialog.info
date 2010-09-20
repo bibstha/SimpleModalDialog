@@ -1,0 +1,3 @@
+name = Simple Modal Dialog
+description = A module to display customized session based modal dialog
+core = 6.x
