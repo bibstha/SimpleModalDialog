@@ -11,10 +11,3 @@
 
   <div class="close_button">Close</div>
 </div>
-
-<?php
-/**
- * DONOT MODIFY BELOW THIS LINE
- */
-drupal_add_js(drupal_get_path('module', 'simplemodaldialog') . '/simplemodaldialog.js');
-?>

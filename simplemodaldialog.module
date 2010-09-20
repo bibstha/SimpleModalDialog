@@ -20,11 +20,25 @@ function simplemodaldialog_menu() {
   return $items;
 }
 
+/**
+ * Can't hook drupal_add_js in a preprocess or template function
+ *
+ * @todo check in hook_init if it is a front page.
+ */
+function simplemodaldialog_init() {
+  if (!$_SESSION['simplemodaldialog']) {
+    drupal_add_js(drupal_get_path('module', 'simplemodaldialog') . '/simplemodaldialog.js');
+  }
+}
+
 function simplemodaldialog_hide() {
-  $_SESSION['simplemodaldialog'] = true;
+  // $_SESSION['simplemodaldialog'] = true;
   // For testing purposes, uncomment this to toggle session value
-  // $_SESSION['simplemodaldialog'] = !$_SESSION['simplemodaldialog'];
-  print '';
+  $_SESSION['simplemodaldialog'] = !$_SESSION['simplemodaldialog'];
+  if ($_SESSION['simplemodaldialog']) 
+    print "hidden";
+  else
+    print "shown";
 }
 
 /**
@@ -39,7 +53,6 @@ function simplemodaldialog_preprocess_page(&$vars) {
   // Check if session is initially blank
   if ($vars['is_front'] && !$_SESSION['simplemodaldialog']) {
     $vars['simplemodaldialog'] = theme('simplemodaldialog');
-    
   } else {
     // Session is not blank, and set already. so set the variable to false
     $vars['simplemodaldialog'] = false;
